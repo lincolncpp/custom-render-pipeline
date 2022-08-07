@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 public partial class CameraRenderer {
 
 	private static ShaderTagId unlitShaderTagId = new ShaderTagId("SRPDefaultUnlit");
+	private static ShaderTagId litShaderTagId = new ShaderTagId("CustomLit");
 
 
 	private ScriptableRenderContext context;
@@ -52,10 +53,13 @@ public partial class CameraRenderer {
 		SortingSettings sortingSettings = new SortingSettings(camera) { 
 			criteria = SortingCriteria.CommonOpaque
 		};
+		
 		DrawingSettings drawingSettings = new DrawingSettings(unlitShaderTagId, sortingSettings) {
 			enableDynamicBatching = useDynamicBatching,
 			enableInstancing = useGPUInstancing
 		};
+		drawingSettings.SetShaderPassName(1, litShaderTagId);
+
 		FilteringSettings filteringSettings = new FilteringSettings(RenderQueueRange.opaque);
 
 		context.DrawRenderers(cullingResults, ref drawingSettings, ref filteringSettings);
