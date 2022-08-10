@@ -11,6 +11,7 @@ public partial class CameraRenderer {
 
 	private ScriptableRenderContext context;
 	private Camera camera;
+	private Lighting lighting = new Lighting();
 
 	private const string bufferName = "Render Camera";
 	private CommandBuffer buffer = new CommandBuffer {
@@ -30,8 +31,9 @@ public partial class CameraRenderer {
 		}
 
 		Setup();
-		DrawUnsupportedShaders();
+		lighting.Setup(context, cullingResults);
 		DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
+		DrawUnsupportedShaders();
 		DrawGizmos();
 		Submit();
 	}
